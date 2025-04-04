@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-type Handlerfunc func(http.ResponseWriter, *http.Request)
+type Handlerfunc func(c *Context)
 type Engine struct {
 	router *Router
 }
@@ -23,10 +23,6 @@ func (engine *Engine) Run(addr string) (err error) {
 	return http.ListenAndServe(addr, engine)
 }
 func (engine *Engine) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	key := r.Method + "-" + r.URL.Path
-	if handler, ok := engine.router.handlers[key]; ok {
-		handler(w, r)
-	} else {
-		http.NotFound(w, r)
-	}
+	context := newContext(w, r)
+	engine.router.Handle(context)
 }

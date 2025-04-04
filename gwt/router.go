@@ -1,6 +1,9 @@
 package gwt
 
-import "strings"
+import (
+	"net/http"
+	"strings"
+)
 
 type Router struct {
 	handlers map[string]Handlerfunc
@@ -24,4 +27,13 @@ func newRouter() *Router {
 func (r *Router) addRoute(method string, pattern string, handler Handlerfunc) {
 	key := method + "-" + pattern
 	r.handlers[key] = handler
+}
+func (r *Router) Handle(c *Context) {
+	key := c.Method + "-" + c.Path
+	if handler, ok := r.handlers[key]; ok {
+		handler(c)
+	} else {
+		http.NotFound(c.W, c.R)
+	}
+
 }

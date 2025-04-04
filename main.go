@@ -2,13 +2,12 @@ package main
 
 import (
 	"gwt"
-	"net/http"
 )
 
 func main() {
-	gwt := gwt.New()
-	gwt.Get("/test", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("test...."))
+	g := gwt.New()
+	g.Get("/test", func(c *gwt.Context) {
+		c.W.Write([]byte("test...."))
 	})
-	gwt.Run(":8888")
+	g.Run(":8888")
 }
