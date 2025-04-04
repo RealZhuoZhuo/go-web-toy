@@ -8,6 +8,7 @@ type Context struct {
 	Path       string
 	Method     string
 	StatusCode int
+	Params     map[string]string
 }
 
 func newContext(w http.ResponseWriter, r *http.Request) *Context {

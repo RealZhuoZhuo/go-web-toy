@@ -13,11 +13,11 @@ func New() *Engine {
 	return &Engine{router: newRouter()}
 }
 
-func (engine *Engine) Get(pattern string, handler Handlerfunc) {
-	engine.router.addRoute("GET", pattern, handler)
+func (engine *Engine) Get(path string, handler Handlerfunc) {
+	engine.router.addRoute("GET", path, handler)
 }
-func (engine *Engine) Post(pattern string, handler Handlerfunc) {
-	engine.router.addRoute("POST", pattern, handler)
+func (engine *Engine) Post(path string, handler Handlerfunc) {
+	engine.router.addRoute("POST", path, handler)
 }
 func (engine *Engine) Run(addr string) (err error) {
 	return http.ListenAndServe(addr, engine)
