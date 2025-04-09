@@ -1,22 +1,26 @@
 package main
 
 import (
+	"fmt"
 	"gwt"
+	"time"
 )
 
+func test() gwt.Handlerfunc {
+	return func(c *gwt.Context) {
+		fmt.Printf("test....")
+		t1 := time.Now()
+		c.Next()
+		t2 := time.Now()
+		fmt.Printf("%v", t2.Sub(t1))
+	}
+}
 func main() {
 	g := gwt.New()
-	v1 := g.Group("/v1")
-	{
-		v1.Get("api", func(c *gwt.Context) {
-			c.W.Write([]byte("/v1/api....."))
-		})
-	}
-	v2 := g.Group("/v2")
-	{
-		v2.Get("api", func(c *gwt.Context) {
-			c.W.Write([]byte("/v2/api....."))
-		})
-	}
+	g.Use(test())
+	g.Get("/test", func(c *gwt.Context) {
+		c.W.Write([]byte("hello"))
+		time.Sleep(3 * time.Second)
+	})
 	g.Run(":8888")
 }

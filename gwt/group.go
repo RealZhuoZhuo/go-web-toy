@@ -1,10 +1,10 @@
 package gwt
 
 type RouterGroup struct {
-	perfix string
-	// middlewares []Handlerfunc
-	parent *RouterGroup
-	engine *Engine
+	perfix      string
+	middlewares []Handlerfunc
+	parent      *RouterGroup
+	engine      *Engine
 }
 
 func (group *RouterGroup) Group(prefix string) *RouterGroup {
@@ -26,4 +26,7 @@ func (group *RouterGroup) Get(path string, handler Handlerfunc) {
 }
 func (group *RouterGroup) Post(path string, handler Handlerfunc) {
 	group.addRoute("POST", path, handler)
+}
+func (group *RouterGroup) Use(middlewares ...Handlerfunc) {
+	group.middlewares = append(group.middlewares, middlewares...)
 }

@@ -92,11 +92,12 @@ func (r *Router) Handle(c *Context) {
 		c.Params = params
 		key := c.Method + "-" + node.path
 		if handler, ok := r.handlers[key]; ok {
-			handler(c)
+			c.handlers = append(c.handlers, handler)
 		} else {
 			http.NotFound(c.W, c.R)
 		}
 	} else {
 		http.NotFound(c.W, c.R)
 	}
+	c.Next()
 }
